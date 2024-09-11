@@ -18,7 +18,7 @@ services:
       - LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT=/label-studio/files
   segment_anything_model:
     container_name: label-studio-ml-backend
-    image: heartexlabs/label-studio-ml-backend:sam
+    image: heartexlabs/label-studio-ml-backend:sam-master
     build:
       context: ${LABEL_STUDIO_ML_BACKEND_PATH}/label_studio_ml/examples/
       dockerfile: ${DOCKERFILE_PATH}

@@ -2,8 +2,13 @@
 
 ## Table of Contents
 
-1. [Clone Repository](#clone-repository)
-2. [Installation](#installation)
+- [Label Toolkit](#label-toolkit)
+  - [Table of Contents](#table-of-contents)
+  - [Clone Repository](#clone-repository)
+  - [Installation](#installation)
+    - [1. Create Conda Environment](#1-create-conda-environment)
+    - [2. Install Label Toolkit](#2-install-label-toolkit)
+  - [Launch and Stop the Label Toolkit](#launch-and-stop-the-label-toolkit)
 
 ## Clone Repository
 
@@ -22,10 +27,12 @@
    git submodule update --init --recursive
    ```
 
-3. **Change the permission of the `data` folder (if needed):**
+3. **Change the permission of the `data/my_data` folder (if needed):**
+
+   Adjust the permissions of the `data/my_data` folder to ensure proper access:
 
    ```bash
-   sudo chown -R 777 data
+   sudo chown -R 777 data/my_data
    ```
 
 ## Installation
@@ -55,3 +62,25 @@ Install the toolkit and its dependencies in editable mode:
 ```bash
 python -m pip install -e .
 ```
+
+## Launch and Stop the Label Toolkit
+
+1. **Run the Label Toolkit with Docker:**
+
+   Launch the Label Toolkit using Docker Compose:
+
+   ```bash
+   docker compose -f docker-compose-sam.yml up -d
+   ```
+
+2. **Access the Label Toolkit:**
+
+   Open your browser and navigate to [http://localhost:8080](http://localhost:8080) to access the Label Toolkit.
+
+3. **Stop the Label Toolkit:**
+
+   Stop the running Label Toolkit instance with:
+
+   ```bash
+   docker compose -f docker-compose-sam.yml down
+   ```

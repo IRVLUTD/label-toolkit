@@ -1,6 +1,10 @@
 {
-    "LABEL_STUDIO_URL": "http://localhost:8080",
-    "LABEL_STUDIO_API_KEY": "7111efc7e8a964bf714ddd6d44dc39643c993321",
-    "LABEL_STUDIO_ML_BACKEND_PATH": "third-party/label-studio-ml-backend",
-    "LABEL_STUDIO_LABEL_CONFIG_FILE": "config/label-template.xml"
+    "label_studio_url": "http://localhost:8080",
+    "label_studio_access_token": "e6d5a079d1d37809abffa6f00f31b468faac0a23",
+    "label_studio_image": "heartexlabs/label-studio:20240819.191725-ls-release-1-13-1-d9b816a37",
+    "ml_backend_model_path": "third-party/label-studio-ml-backend/label_studio_ml/examples/segment_anything_model",
+    "ml_backend_model_test_env": "false",
+    "sam_choice": "SAM",
+    "log_level": "INFO",
+    "user_password": "label-studio"
 }

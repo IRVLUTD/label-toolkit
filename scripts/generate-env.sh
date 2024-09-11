@@ -2,27 +2,27 @@
 # Author: Jikai Wang
 # Email: jikai.wang@utdallas.edu
 
+# Determine current and project directories
 CURR_DIR=$( realpath $(dirname $0) )
 PROJ_DIR=$( dirname ${CURR_DIR} )
-DATA_DIR="${PROJ_DIR}/data"
 
-# Set the environment variables for the Label Studio ML backend
-LABEL_STUDIO_ML_BACKEND_PATH="${PROJ_DIR}/third-party/label-studio-ml-backend"
-LABEL_STUDIO_ACCESS_TOKEN="e6d5a079d1d37809abffa6f00f31b468faac0a23"
+# Load Configurations from json file
+CONFIG_FILE="${PROJ_DIR}/config/config.json"
+LABEL_STUDIO_ACCESS_TOKEN=$(jq -r '.label_studio_access_token' "$CONFIG_FILE")
+LABEL_STUDIO_IMAGE=$(jq -r '.label_studio_image' "$CONFIG_FILE")
+LABEL_STUDIO_ML_BACKEND_MODEL_PATH=$(jq -r '.ml_backend_model_path' "$CONFIG_FILE")
+SAM_CHOICE=$(jq -r '.sam_choice' "$CONFIG_FILE")
+LOG_LEVEL=$(jq -r '.log_level' "$CONFIG_FILE")
 
-# Change this to your model name: MobileSAM or SAM
-SAM_CHOICE="SAM"
-LOG_LEVEL="INFO"
-LABEL_STUDIO_VERSION="20240819.191725-ls-release-1-13-1-d9b816a37"
 
 # Create or overwrite the .env file
 cat <<EOF > ${PROJ_DIR}/.env
-LABEL_STUDIO_VERSION=${LABEL_STUDIO_VERSION}
-LABEL_STUDIO_ML_BACKEND_PATH=${LABEL_STUDIO_ML_BACKEND_PATH}
+LABEL_STUDIO_IMAGE=${LABEL_STUDIO_IMAGE}
 LABEL_STUDIO_HOST=http://label-studio:8080
+DATA_DIR=${PROJ_DIR}/data
+PROJ_DIR=${PROJ_DIR}
 LABEL_STUDIO_ACCESS_TOKEN=${LABEL_STUDIO_ACCESS_TOKEN}
-DOCKERFILE_PATH=segment_anything_model/Dockerfile
-DATA_DIR=${DATA_DIR}
+LABEL_STUDIO_ML_BACKEND_MODEL_PATH=${LABEL_STUDIO_ML_BACKEND_MODEL_PATH}
 SAM_CHOICE=${SAM_CHOICE}
 LOG_LEVEL=${LOG_LEVEL}
 EOF

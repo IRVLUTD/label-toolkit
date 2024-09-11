@@ -9,6 +9,7 @@
     - [1. Create Conda Environment](#1-create-conda-environment)
     - [2. Install Label Toolkit](#2-install-label-toolkit)
   - [Launch and Stop the Label Toolkit](#launch-and-stop-the-label-toolkit)
+  - [Example Usage](#example-usage)
 
 ## Clone Repository
 
@@ -83,4 +84,14 @@ python -m pip install -e .
 
    ```bash
    docker compose -f docker-compose-sam.yml down
+   ```
+
+## Example Usage
+
+1. **Add users to the Label Toolkit:**
+
+   Add users to the Label Toolkit by running the following command:
+
+   ```bash
+   bash scripts/add_user.sh <username> <(optional)password>
    ```

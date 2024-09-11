@@ -4,8 +4,8 @@ networks:
 
 services:
   label-studio:
-    image: heartexlabs/label-studio:${LABEL_STUDIO_VERSION}
     container_name: label-studio
+    image: ${LABEL_STUDIO_IMAGE}
     networks:
       - label_studio_network
     ports:
@@ -13,6 +13,7 @@ services:
     volumes:
       - "${DATA_DIR}/my_data:/label-studio/data"
       - "${DATA_DIR}/my_files:/label-studio/files"
+      - "${PROJ_DIR}:/code"
     environment:
       - LABEL_STUDIO_LOCAL_FILES_SERVING_ENABLED=true
       - LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT=/label-studio/files
@@ -20,8 +21,8 @@ services:
     container_name: label-studio-ml-backend
     image: heartexlabs/label-studio-ml-backend:sam-master
     build:
-      context: ${LABEL_STUDIO_ML_BACKEND_PATH}/label_studio_ml/examples/
-      dockerfile: ${DOCKERFILE_PATH}
+      context: .
+      dockerfile: ${LABEL_STUDIO_ML_BACKEND_MODEL_PATH}/Dockerfile
       shm_size: '4gb'
       args:
         TEST_ENV: false

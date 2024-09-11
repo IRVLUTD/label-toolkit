@@ -2,8 +2,10 @@ from pathlib import Path
 import json
 import logging
 import cv2
+import numpy as np
 from tqdm import tqdm
 import shutil
+import random
 
 PROJ_ROOT = Path(__file__).resolve().parents[1]
 
@@ -18,6 +20,15 @@ def get_logger(name, level="INFO"):
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
     return logger
+
+
+def generate_random_color(color_type="hex"):
+    if color_type == "hex":
+        return f"#{random.randint(0, 0xFFFFFF):06x}"
+    elif color_type == "rgb":
+        return f"rgb({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)})"
+    else:
+        raise ValueError(f"Invalid color type: {color_type}")
 
 
 def make_clean_folder(folder_path):

@@ -10,30 +10,48 @@
 1. **Clone the repository and navigate to the project directory:**
 
    ```bash
-   git clone --recursive git@github.com:gobanana520/label-toolkit.git
+   git clone git@github.com:gobanana520/label-toolkit.git
    cd label-toolkit
+   ```
+
+2. **Initialize and update submodules:**
+
+   Ensure that all submodules are initialized and up to date:
+
+   ```bash
+   git submodule update --init --recursive
+   ```
+
+3. **Change the permission of the `data` folder (if needed):**
+
+   ```bash
+   sudo chown -R 777 data
    ```
 
 ## Installation
 
 ### 1. Create Conda Environment
 
-- **Create Python 3.10 Conda Environment:**
+- **Create a Python 3.10 Conda Environment:**
+
+  Set up a new Conda environment with Python 3.10:
 
   ```bash
   conda create --name label-toolkit python=3.10
   ```
 
-- **Activate Conda Environment:**
+- **Activate the Conda Environment:**
+
+  Activate the newly created environment:
 
   ```bash
   conda activate label-toolkit
   ```
 
-### 2. Install Dependencies
+### 2. Install Label Toolkit
 
-Install the necessary dependencies using the following command:
+Install the toolkit and its dependencies in editable mode:
 
 ```bash
-python -m pip install --no-cache-dir -r requirements.txt
+python -m pip install -e .
 ```

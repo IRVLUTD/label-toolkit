@@ -1,4 +1,6 @@
 #!/bin/bash
+# Author: Jikai Wang
+# Email: jikai.wang@utdallas.edu
 
 CURR_DIR=$( realpath $(dirname $0) )
 PROJ_DIR=$( dirname ${CURR_DIR} )
@@ -10,7 +12,7 @@ MACHINE_IP=$(hostname -I | awk '{print $1}')
 
 # Set the environment variables for the Label Studio ML backend
 LABEL_STUDIO_ML_BACKEND_PATH="${PROJ_DIR}/third-party/label-studio-ml-backend"
-LABEL_STUDIO_ACCESS_TOKEN=7111efc7e8a964bf714ddd6d44dc39643c993321
+LABEL_STUDIO_ACCESS_TOKEN="e6d5a079d1d37809abffa6f00f31b468faac0a23"
 
 # Change this to your model name: MobileSAM or SAM
 SAM_CHOICE="SAM"

@@ -7,22 +7,9 @@ packages = ["label_toolkit"]
 
 [project]
 name = "label-toolkit"
-version = "0.0.1"
+version = "1.0.0"
 description = "A toolkit for labeling data using Label Studio and Label Studio ML Backend"
 authors = [
     { name = "Jikai Wang", email = "jikai.wang@utdallas.edu" }
 ]
 license = { text = "MIT" }
-
-dependencies = [
-    "jupyterlab==3.4.3",
-    "ipywidgets==8.1.5",
-    "numpy==1.26.4",
-    "scipy==1.14.1",
-    "pandas==2.2.2",
-    "matplotlib==3.9.2",
-    "opencv-python==4.10.0.84",
-    "opencv-contrib-python==4.10.0.84",
-    "label-studio-sdk==1.0.5",
-    "label-studio-converter==0.0.59",
-]

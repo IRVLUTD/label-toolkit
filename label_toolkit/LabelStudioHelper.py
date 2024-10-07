@@ -9,8 +9,8 @@ class LabelStudioHelper:
         self._logger = get_logger("LabelStudioHelper")
         self._config = read_data_from_json(PROJ_ROOT / "config" / "config.json")
         self._client = LabelStudio(
-            base_url=self._config["label_studio_url"],
-            api_key=self._config["label_studio_access_token"],
+            base_url=f"http://localhost:{self._config['label_studio_bind_port']}",
+            api_key=self._config["label_studio_user_token"],
         )
 
         self._updaate_users_info()
@@ -76,15 +76,19 @@ class LabelStudioHelper:
         storage_path: str,
         use_blob_urls: bool = False,
         regex_filter: str = None,
+        sync_storage: bool = False,
     ):
         project_id = self._projects_info[project_title]["id"]
-        self._client.import_storage.local.create(
+        storage = self._client.import_storage.local.create(
             project=project_id,
             title=storage_title,
             path=storage_path,
             use_blob_urls=use_blob_urls,
             regex_filter=regex_filter,
         )
+
+        if sync_storage:
+            self._client.import_storage.local.sync(id=storage.id)
 
         self._logger.info(f"Local storage {storage_title} created successfully.")
 
@@ -127,5 +131,16 @@ class LabelStudioHelper:
             }
             for project in projects
         }
+        self._logger.debug("Projects info updated.")
 
-        print(self._projects_info)
+        # print(self._projects_info)
+
+    @property
+    def users_info(self):
+        self._updaate_users_info()
+        return self._users_info
+    
+    @property
+    def projects_info(self):
+        self._update_projects_info()
+        return self._projects_info

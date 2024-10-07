@@ -1,34 +1,34 @@
 import argparse
-from cProfile import label
+
+from zipp import Path
+from label_toolkit.utils import PROJ_ROOT, read_data_from_json
 from label_toolkit.utils import generate_random_color
 from label_toolkit.LabelStudioHelper import LabelStudioHelper
 
 
 def generate_label_interface(label_names):
     """Generate a dynamic Label Studio interface with BrushLabels, KeypointLabels, and RectangleLabels."""
-    template = """
-    <View>
-      <Image name="image" value="$image" zoom="true"/>
+    template = """<View>
+    <Image name="image" value="$image" zoom="true"/>
 
-      <Header value="Brush Labels"/>
-      <BrushLabels name="brushTag" toName="image">
-        {brush_labels}
-      </BrushLabels>
+    <Header value="Brush Labels"/>
+    <BrushLabels name="brushTag" toName="image">
+      {brush_labels}
+    </BrushLabels>
 
-      <Header value="Keypoint Labels"/>
-      <KeyPointLabels name="keypointTag" toName="image" smart="true">
-        {keypoint_labels}
-      </KeyPointLabels>
+    <Header value="Keypoint Labels"/>
+    <KeyPointLabels name="keypointTag" toName="image" smart="true">
+      {keypoint_labels}
+    </KeyPointLabels>
 
-      <Header value="Rectangle Labels"/>
-      <RectangleLabels name="rectangleTag" toName="image" smart="true">
-        {rectangle_labels}
-      </RectangleLabels>
+    <Header value="Rectangle Labels"/>
+    <RectangleLabels name="rectangleTag" toName="image" smart="true">
+      {rectangle_labels}
+    </RectangleLabels>
 
-      <TextArea name="referring" toName="image" editable="true" perRegion="true" required="true"
-                maxSubmissions="1" rows="5" placeholder="Referring Expression" displayMode="region-list"/>
-    </View>
-    """
+    <TextArea name="referring" toName="image" editable="true" perRegion="true" required="true"
+              maxSubmissions="1" rows="5" placeholder="Referring Expression" displayMode="region-list"/>
+    </View>"""
 
     brush_labels = []
     keypoint_labels = []
@@ -45,48 +45,60 @@ def generate_label_interface(label_names):
         )
 
     return template.format(
-        brush_labels="\n        ".join(brush_labels),
-        keypoint_labels="\n        ".join(keypoint_labels),
-        rectangle_labels="\n        ".join(rectangle_labels),
+        brush_labels="\n      ".join(brush_labels),
+        keypoint_labels="\n      ".join(keypoint_labels),
+        rectangle_labels="\n      ".join(rectangle_labels),
     )
 
 
-# Example usage:
-# label_names = ["Obj_1", "Obj_2", "Obj_3", "Obj_4"]
-# interface_xml = generate_label_interface(label_names)
-# print(interface_xml)
-
-
 if __name__ == "__main__":
-    # parser = argparse.ArgumentParser()
-    # parser.add_argument("email", type=str, help="User email")
-    # parser.add_argument(
-    #     "--overwrite",
-    #     action="store_true",
-    #     help="Overwrite user if already exists",
-    # )
-    # args = parser.parse_args()
+    parser = argparse.ArgumentParser("Add projects to Label Studio")
+    parser.add_argument(
+        "--scene_folder", type=str, required=True, help="Secene folder path"
+    )
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Force overwrite the existing project",
+    )
+    args = parser.parse_args()
+    scene_folder = Path(args.scene_folder).resolve()
+    overwrite = args.overwrite
 
     label_studio_helper = LabelStudioHelper()
-    # label_studio_helper.add_project(
-    #     title="test_project",
-    #     description="Test project",
-    #     label_config="<View></View>",
-    #     overwrite=True,
-    # )
-    # label_studio_helper.add_ml_backend(
-    #     project_title="test_project",
-    #     ml_title="Segmentation Anything Model",
-    #     ml_url="http://label-studio-ml-backend:9090",
-    #     ml_is_interactive=True,
-    # )
-    # label_studio_helper.add_local_storage(
-    #     project_title="test_project",
-    #     storage_title="demo_1",
-    #     storage_path="/label-studio/files/demo_1",
-    #     use_blob_urls=True,
-    #     regex_filter=".*.jpg",
-    # )
-    annotat = label_studio_helper.export_annotations_by_project(
-        project_title="test_project"
+
+    scene_name = scene_folder.name
+
+    print(f">>>>>>>>>> Adding project {scene_name} <<<<<<<<<<<<")
+
+    label_names = read_data_from_json(scene_folder / "meta.json")["object_labels"]
+    interface_xml = generate_label_interface(label_names)
+    storage_path = f"/label-studio/files/{scene_name}"
+
+    if scene_name in label_studio_helper.projects_info:
+        print(f"Project {scene_name} already exists.")
+        if not overwrite:
+            exit()
+
+    label_studio_helper.add_project(
+        title=scene_name,
+        description=f"Annotate objects in {scene_name} with SAM backend",
+        label_config=interface_xml,
+        overwrite=overwrite,
+    )
+
+    label_studio_helper.add_ml_backend(
+        project_title=scene_name,
+        ml_title="Segmentation Anything Model",
+        ml_url="http://label-studio-ml-backend:9090",
+        ml_is_interactive=True,
+    )
+
+    label_studio_helper.add_local_storage(
+        project_title=scene_name,
+        storage_title=scene_name,
+        storage_path=storage_path,
+        use_blob_urls=True,
+        regex_filter=".*.jpg",
+        sync_storage=True,
     )

@@ -1,9 +1,15 @@
 {
-    "label_studio_url": "http://localhost:8080",
-    "label_studio_access_token": "e6d5a079d1d37809abffa6f00f31b468faac0a23",
+    "label_studio_username": "admin@gmail.com",
+    "label_studio_password": "admin",
+    "label_studio_user_token": "admin123",
     "label_studio_image": "heartexlabs/label-studio:20240819.191725-ls-release-1-13-1-d9b816a37",
+    "label_studio_data_dir": "./data/my_data",
+    "label_studio_files_dir": "./data/data_collection/scenes",
+    "label_studio_bind_port": "8080",
     "ml_backend_model_path": "third-party/label-studio-ml-backend/label_studio_ml/examples/segment_anything_model",
     "ml_backend_model_test_env": "false",
+    "ml_backend_model_server_dir": "./data/my_server",
+    "ml_backend_model_bind_port": "9090",
     "sam_choice": "SAM",
     "log_level": "INFO",
     "user_password": "label-studio"

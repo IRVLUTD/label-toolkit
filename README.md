@@ -1,8 +1,10 @@
 # Label Toolkit
 
+[![Python](https://img.shields.io/badge/Python-3.10-3776AB.svg)](https://www.python.org/downloads/release/python-310) [![Label Studio](https://img.shields.io/badge/Label%20Studio-1.13.1-ff6f61.svg)](https://labelstud.io/) [![Docker](https://img.shields.io/badge/Docker-27.3.1-0db7ed.svg)](https://docs.docker.com/desktop) [![Docker Compose](https://img.shields.io/badge/Docker%20Compose-2.29.7-0db7ed.svg)](https://docs.docker.com/compose/install) ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 ---
 
-## Introduction
+## Overview
 
 The Label Toolkit is built on top of [Label Studio](https://github.com/HumanSignal/label-studio) and the [Label Studio ML Backend](https://github.com/HumanSignal/label-studio-ml-backend), providing a web-based tool for efficient data labeling and annotation. Designed specifically to support SAM backend for annotating 2D image data, Label Toolkit offers a user-friendly interface for creating segmentation masks by prompting keypoints or bounding boxes, and assigning text labels to those masks.
 
@@ -11,11 +13,12 @@ The Label Toolkit is built on top of [Label Studio](https://github.com/HumanSign
 ## Table of Contents
 
 - [Label Toolkit](#label-toolkit)
-  - [Introduction](#introduction)
+  - [Overview](#overview)
   - [Table of Contents](#table-of-contents)
   - [Environment Setup](#environment-setup)
   - [Launch and Stop the Label Toolkit](#launch-and-stop-the-label-toolkit)
   - [Example Usage](#example-usage)
+- [License](#license)
 
 ---
 
@@ -117,3 +120,7 @@ The Label Toolkit is built on top of [Label Studio](https://github.com/HumanSign
    Below is a demonstration of creating annotations using SAM backend integration:
 
    ![Annotation Demo](./docs/assets/ml-backend-sam-demo_1080p.gif)
+
+# License
+
+This project is licensed under the [MIT License](./LICENSE). However, it includes Label Studio ML Backend as a submodule, which is licensed under the [Apache License 2.0](./third-party/label-studio-ml-backend/LICENSE). Please ensure that you comply with the terms of the Apache License 2.0 for any use or distribution of Label Studio ML Backend within this toolkit.

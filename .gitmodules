@@ -1,0 +1,3 @@
+[submodule "third-party/label-studio-ml-backend"]
+	path = third-party/label-studio-ml-backend
+	url = https://github.com/HumanSignal/label-studio-ml-backend.git

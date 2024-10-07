@@ -1,0 +1,24 @@
+<View>
+  <Image name="image" value="$image" zoom="true"/>
+
+  <Header value="Brush Labels"/>
+  <BrushLabels name="brushTag" toName="image">
+    <Label value="Dog" background="#FF0000"/>
+    <Label value="Possum" background="#0d14d3"/>
+  </BrushLabels>
+
+  <Header value="Keypoint Labels"/>
+  <KeyPointLabels name="keypointTag" toName="image" smart="true">
+    <Label value="Dog" background="#00FF00" showInline="true"/>
+    <Label value="Possum" background="#00FFFF" showInline="true"/>
+  </KeyPointLabels>
+
+  <Header value="Rectangle Labels"/>
+  <RectangleLabels name="rectangleTag" toName="image" smart="true">
+    <Label value="Dog" background="#FFFF00" showInline="true"/>
+    <Label value="Possum" background="#FFA500" showInline="true"/>
+  </RectangleLabels>
+
+  <TextArea name="referring" toName="image" editable="true" perRegion="true" required="true"
+            maxSubmissions="1" rows="5" placeholder="Referring Expression" displayMode="region-list"/>
+</View>

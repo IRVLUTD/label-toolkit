@@ -4,9 +4,9 @@
 
 source "$( realpath $(dirname $0) )/config.sh"
 
-# Check if username is provided
+# Check if scene folder is provided
 if [ -z "$1" ]; then
-    log_error "No username provided."
+    log_error "No scene folder provided."
     log_message "Usage: $0 <scene_folder_path>"
     exit 1
 fi
@@ -23,7 +23,7 @@ log_message "Changing permissions of the scene folder..."
 sudo chmod -R 777 ${SCENE_DIR}
 
 # Add project to label-studio
-if ! python "${PROJ_DIR}/scripts/add_project.shy" --scene_folder "${SCENE_DIR}"; then
+if ! python "${PROJ_DIR}/tools/add_project.py" --scene_folder "${SCENE_DIR}"; then
     log_error "Failed to add project for ${SCENE_DIR}"
 fi
 

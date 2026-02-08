@@ -21,16 +21,17 @@ services:
       - LABEL_STUDIO_USERNAME=${LABEL_STUDIO_USERNAME}
       - LABEL_STUDIO_PASSWORD=${LABEL_STUDIO_PASSWORD}
       - LABEL_STUDIO_USER_TOKEN=${LABEL_STUDIO_USER_TOKEN}
+      - LABEL_STUDIO_ENABLE_LEGACY_API_TOKEN=true
 
   segment_anything_model:
     container_name: label-studio-ml-backend
     build:
-      context: ${ML_BACKEND_MODEL_PATH}
+      context: ${ML_BACKEND_SAM2_IMAGE_MODEL_PATH}
       dockerfile: Dockerfile
-      shm_size: '4gb'
+      shm_size: "4gb"
       args:
         TEST_ENV: false
-    image: heartexlabs/label-studio-ml-backend:sam-master
+    image: heartexlabs/label-studio-ml-backend:sam2
     deploy:
       resources:
         reservations:
@@ -41,14 +42,18 @@ services:
     networks:
       - label_studio_network
     environment:
-      - SAM_CHOICE=${SAM_CHOICE}
       - LOG_LEVEL=${LOG_LEVEL}
-      - NVIDIA_VISIBLE_DEVICES=all
+      - ANY=PARAMETER
       - WORKERS=1
       - THREADS=8
       - MODEL_DIR=/data/models
-      - LABEL_STUDIO_HOST=${LABEL_STUDIO_HOST}
-      - LABEL_STUDIO_ACCESS_TOKEN=${LABEL_STUDIO_USER_TOKEN}
+      - DEVICE=cuda
+      # SAM2 model config
+      - MODEL_CONFIG=configs/sam2.1/sam2.1_hiera_l.yaml
+      # SAM2 checkpoint
+      - MODEL_CHECKPOINT=sam2.1_hiera_large.pt
+      - LABEL_STUDIO_URL=${LABEL_STUDIO_HOST}
+      - LABEL_STUDIO_API_KEY=${LABEL_STUDIO_USER_TOKEN}
     ports:
       - "${ML_BACKEND_BIND_PORT}:9090"
     volumes:

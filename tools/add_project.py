@@ -1,6 +1,5 @@
 import argparse
-
-from zipp import Path
+from pathlib import Path
 from label_toolkit.utils import PROJ_ROOT, read_data_from_json
 from label_toolkit.utils import generate_random_color
 from label_toolkit.LabelStudioHelper import LabelStudioHelper
@@ -37,12 +36,8 @@ def generate_label_interface(label_names):
     for label in label_names:
         color = generate_random_color()
         brush_labels.append(f'<Label value="{label}" background="{color}"/>')
-        keypoint_labels.append(
-            f'<Label value="{label}" background="{color}" showInline="true"/>'
-        )
-        rectangle_labels.append(
-            f'<Label value="{label}" background="{color}" showInline="true"/>'
-        )
+        keypoint_labels.append(f'<Label value="{label}" background="{color}" showInline="true"/>')
+        rectangle_labels.append(f'<Label value="{label}" background="{color}" showInline="true"/>')
 
     return template.format(
         brush_labels="\n      ".join(brush_labels),
@@ -53,15 +48,18 @@ def generate_label_interface(label_names):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Add projects to Label Studio")
-    parser.add_argument(
-        "--scene_folder", type=str, required=True, help="Secene folder path"
-    )
+    parser.add_argument("--scene_folder", type=str, default=None, help="Secene folder path")
     parser.add_argument(
         "--overwrite",
         action="store_true",
         help="Force overwrite the existing project",
     )
     args = parser.parse_args()
+
+    if args.scene_folder is None:
+        print("Please provide the scene folder path")
+        exit()
+
     scene_folder = Path(args.scene_folder).resolve()
     overwrite = args.overwrite
 

@@ -1,6 +1,8 @@
 # Label Toolkit
 
-[![Python](https://img.shields.io/badge/Python-3.10-3776AB.svg)](https://www.python.org/downloads/release/python-310) [![Label Studio](https://img.shields.io/badge/Label%20Studio-1.13.1-ff6f61.svg)](https://labelstud.io/) [![Docker](https://img.shields.io/badge/Docker-27.3.1-0db7ed.svg)](https://docs.docker.com/desktop) [![Docker Compose](https://img.shields.io/badge/Docker%20Compose-2.29.7-0db7ed.svg)](https://docs.docker.com/compose/install) ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+[![Python](https://img.shields.io/badge/Python-3.10-3776AB.svg)](https://www.python.org/downloads/release/python-310)
+[![Label Studio](https://img.shields.io/badge/Label%20Studio-1.0.20-ff6f61.svg)](https://labelstud.io/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 ---
 
@@ -24,47 +26,52 @@ The Label Toolkit is built on top of [Label Studio](https://github.com/HumanSign
 
 ## Environment Setup
 
-1. **Create Conda Environment**
-
-   Set up a Python environment for Label Toolkit using Conda:
-
-   ```bash
-   conda create --name label-toolkit python=3.10
-   conda activate label-toolkit
-   ```
-
-2. **Clone the Repository**
+1. **Clone the Repository**
 
    Clone the Label Toolkit repository and initialize submodules:
 
    ```bash
-   git clone https://github.com/gobanana520/label-toolkit.git
+   git clone https://github.com/IRVLUTD/label-toolkit.git
    cd label-toolkit
    git submodule update --init --recursive
    ```
 
-3. **Install Dependencies**
+2. **Create Conda Environment**
+
+   Set up a Python environment for Label Toolkit using Conda:
+
+   ```bash
+   conda create --name label-toolkit python=3.11 -y
+   conda activate label-toolkit
+   ```
+
+<!-- 3. **Install Dependencies**
 
    Install required dependencies from requirements.txt:
 
    ```bash
    python -m pip install --no-cache-dir -r requirements.txt
-   ```
+   ``` -->
 
-4. **Install label-toolkit**
+3. **Install label-toolkit**
 
    Install Label Toolkit in editable mode:
 
    ```bash
-   python -m pip install -e . --no-cache-dir
+   python -m pip install -e .
    ```
 
-5. **Generate Environment Variables for Docker**
-
-   Run the script to create a `.env` file:
+4. **Build Docker Images**
+   - Generate `.env` file for Docker:
 
    ```bash
    bash scripts/create_env.sh
+   ```
+
+   - Build Docker images for Label Toolkit and SAM2 backend:
+
+   ```bash
+   docker compose -f docker-compose-sam2-image.yml build
    ```
 
 ---
@@ -76,19 +83,26 @@ The Label Toolkit is built on top of [Label Studio](https://github.com/HumanSign
    Use Docker Compose to start Label Toolkit:
 
    ```bash
-   docker compose up -d
+   docker compose -f docker-compose-sam2-image.yml up -d
    ```
 
-1. **Access the Label Toolkit**
+2. **Access the Label Toolkit**
 
    Open a browser and go to http://localhost:8080/user/login/ to access Label Toolkit.
 
-1. **Stop the Label Toolkit**
+   > [!CAUTION]
+   > For the first time use, you need to enable the **Legacy Access Token**. ([#7355](https://github.com/HumanSignal/label-studio/issues/7355))
+   > Please log in to Label Toolkit with the default admin account
+   > (**admin@gmail.com / admin**), then navigate to
+   > **Organisation → API Token Settings** and enable **Legacy Tokens**.
+   > <img src="./docs/assets/enable-legacy-tokens.png" width="400" />
+
+3. **Stop the Label Toolkit**
 
    To stop the service, run:
 
    ```bash
-   docker compose down
+   docker compose -f docker-compose-sam2-image.yml down
    ```
 
 ---
@@ -101,23 +115,40 @@ The Label Toolkit is built on top of [Label Studio](https://github.com/HumanSign
 
    ```bash
    bash scripts/add_user.sh <username> <(optional)password>
+
+   # Example:
+   bash scripts/add_user.sh user1 label-studio
    ```
 
    This script will create a new user with the specified email format `<username>@gmail.com`. If a password is not provided, the default password will be set to `label-studio`.
 
 2. **Add a New Project from Scene Folder**
-
-   Add a project by specifying a folder containing scene images:
+   - Add a project by specifying a folder containing scene images:
 
    ```bash
    bash scripts/add_project.sh <path/to/scene/folder>
    ```
 
    This script adjusts folder permissions, creates a project named after the scene folder, adds all `*.jpg` images to the project, and configures SAM backend integration.
+   - A `meta.json` file is required in the scene folder to specify the available labels for annotation. The `meta.json` file should be in the following format:
+
+   ```json
+   {
+     "object_labels": ["01_object_1", "02_object_2", "03_object_3"]
+   }
+   ```
 
 3. **Demo to Create Annotation**
+   - Auto-annotation Settings:
+     To enable auto-annotation, enable the "auto-annotation" button in the bottom left of the Label Toolkit interface. And then, make sure to pick the correct auto-annotation model (e.g., point, rectangle) in the settings panel on the right.
+     - Enable Auto-annotation:
+       <img src="./docs/assets/enable-auto-annotation.png" width="400" />
+     - Keypoint annotation mode:
+       <img src="./docs/assets/keypoint-label-setting.png" width="400" />
+     - Bounding box annotation mode:
+       <img src="./docs/assets/rectangle-label-setting.png" width="400"/>
 
-   Below is a demonstration of creating annotations using SAM backend integration:
+   - Below is a demonstration of creating annotations using SAM backend integration:
 
    ![Annotation Demo](./docs/assets/ml-backend-sam-demo_1080p.gif)
 

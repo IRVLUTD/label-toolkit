@@ -2,14 +2,24 @@
 requires = ["setuptools>=64.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = ["label_toolkit"]
-
 [project]
 name = "label-toolkit"
 version = "1.0.0"
-description = "A toolkit for labeling data using Label Studio and Label Studio ML Backend"
+description = "A toolkit for labeling data using Label Studio and Label Studio ML SAM Backend."
 authors = [
     { name = "Jikai Wang", email = "jikai.wang@utdallas.edu" }
 ]
 license = { text = "MIT" }
+
+dependencies = [
+  "ipykernel",
+  "numpy",
+  "pandas",
+  "scipy",
+  "opencv-python",
+  "label-studio-sdk",
+  "label-studio-converter",
+]
+
+[tool.setuptools]
+packages = ["label_toolkit"]

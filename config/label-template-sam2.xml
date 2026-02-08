@@ -1,0 +1,23 @@
+<View>
+  <Image name="image" value="$image" zoom="true" />
+
+  <View className="title">Brush Labels</View>
+  <BrushLabels name="brushTag" toName="image">
+    <Label value="label_1" background="#FFA39E" />
+    <label value="label_2" background="#D4380D" />
+  </BrushLabels>
+
+  <View className="title">Keypoint Labels</View>
+  <KeyPointLabels name="keypointTag" toName="image" smart="true">
+    <Label value="label_1" background="#FFA39E" />
+    <Label value="label_2" background="#D4380D" />
+  </KeyPointLabels>
+
+  <View className="title">Rectangle Labels</View>
+  <RectangleLabels name="label" toName="image" smart="true">
+    <Label value="label_1" background="#FFA39E" />
+    <Label value="label_2" background="#D4380D" />
+  </RectangleLabels>
+
+
+</View>

@@ -36,12 +36,8 @@ def generate_label_interface(label_names):
     for label in label_names:
         color = generate_random_color()
         brush_labels.append(f'<Label value="{label}" background="{color}"/>')
-        keypoint_labels.append(
-            f'<Label value="{label}" background="{color}" showInline="true"/>'
-        )
-        rectangle_labels.append(
-            f'<Label value="{label}" background="{color}" showInline="true"/>'
-        )
+        keypoint_labels.append(f'<Label value="{label}" background="{color}" showInline="true"/>')
+        rectangle_labels.append(f'<Label value="{label}" background="{color}" showInline="true"/>')
 
     return template.format(
         brush_labels="\n      ".join(brush_labels),
@@ -52,9 +48,7 @@ def generate_label_interface(label_names):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Add projects to Label Studio")
-    parser.add_argument(
-        "--scene_folder", type=str, default=None, help="Secene folder path"
-    )
+    parser.add_argument("--scene_folder", type=str, default=None, help="Secene folder path")
     parser.add_argument(
         "--overwrite",
         action="store_true",

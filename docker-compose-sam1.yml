@@ -1,0 +1,56 @@
+networks:
+  label_studio_network:
+    driver: bridge
+
+services:
+  label-studio:
+    container_name: label-studio
+    image: ${LABEL_STUDIO_IMAGE}
+    networks:
+      - label_studio_network
+    ports:
+      - "${LABEL_STUDIO_BIND_PORT}:8080"
+    volumes:
+      - "${LABEL_STUDIO_DATA_DIR}:/label-studio/data:rw"
+      - "${LABEL_STUDIO_FILES_DIR}:/label-studio/files"
+      - "${PROJ_DIR}:/code"
+    environment:
+      - LABEL_STUDIO_LOCAL_FILES_SERVING_ENABLED=true
+      - LABEL_STUDIO_LOCAL_FILES_DOCUMENT_ROOT=/label-studio/files
+      - LABEL_STUDIO_DISABLE_SIGNUP_WITHOUT_LINK=true
+      - LABEL_STUDIO_USERNAME=${LABEL_STUDIO_USERNAME}
+      - LABEL_STUDIO_PASSWORD=${LABEL_STUDIO_PASSWORD}
+      - LABEL_STUDIO_USER_TOKEN=${LABEL_STUDIO_USER_TOKEN}
+      - LABEL_STUDIO_ENABLE_LEGACY_API_TOKEN=true
+
+  segment_anything_model:
+    container_name: label-studio-ml-backend
+    build:
+      context: ${ML_BACKEND_MODEL_PATH}
+      dockerfile: Dockerfile
+      shm_size: "4gb"
+      args:
+        TEST_ENV: false
+    image: heartexlabs/label-studio-ml-backend:sam-master
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    networks:
+      - label_studio_network
+    environment:
+      - SAM_CHOICE=${SAM_CHOICE}
+      - LOG_LEVEL=${LOG_LEVEL}
+      - NVIDIA_VISIBLE_DEVICES=all
+      - WORKERS=1
+      - THREADS=8
+      - MODEL_DIR=/data/models
+      - LABEL_STUDIO_HOST=${LABEL_STUDIO_HOST}
+      - LABEL_STUDIO_ACCESS_TOKEN=${LABEL_STUDIO_USER_TOKEN}
+    ports:
+      - "${ML_BACKEND_BIND_PORT}:9090"
+    volumes:
+      - "${ML_BACKEND_MODEL_SERVER_DIR}:/data"

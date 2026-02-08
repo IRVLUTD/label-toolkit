@@ -97,6 +97,6 @@ if __name__ == "__main__":
         storage_title=scene_name,
         storage_path=storage_path,
         use_blob_urls=True,
-        regex_filter=".*.jpg",
+        regex_filter=r".*\.(jpg|jpeg|png)$",
         sync_storage=True,
     )

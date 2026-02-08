@@ -64,8 +64,14 @@ The Label Toolkit is built on top of [Label Studio](https://github.com/HumanSign
 4. **Build Docker Images**
    - Generate `.env` file for Docker:
 
-   ```bash
+   For Ubuntu:
+   ```
    bash scripts/create_env.sh
+   ```
+
+   For Windows:
+   ```
+   powershell -ExecutionPolicy Bypass -File .\scripts\setup_env.ps1 -ConfigFile .\config\config.json
    ```
 
    - Build Docker images for Label Toolkit and SAM2 backend:
@@ -111,8 +117,9 @@ The Label Toolkit is built on top of [Label Studio](https://github.com/HumanSign
 
 1. **Add users to the Label Toolkit**
 
-   By default, an admin user (admin@gmail.com) is available. To add more users, use the following script:
+   By default, an admin user (admin@gmail.com) is available. To add more users, use the following script.
 
+   For Ubuntu:
    ```bash
    bash scripts/add_user.sh <username> <(optional)password>
 
@@ -120,14 +127,28 @@ The Label Toolkit is built on top of [Label Studio](https://github.com/HumanSign
    bash scripts/add_user.sh user1 label-studio
    ```
 
+   For Windows:
+   ```
+   .\scripts\add_user.ps1 <username> <(optional)password>
+
+   # Example:
+   .\scripts\add_user.ps1 user1 label-studio
+   ```   
+
    This script will create a new user with the specified email format `<username>@gmail.com`. If a password is not provided, the default password will be set to `label-studio`.
 
 2. **Add a New Project from Scene Folder**
    - Add a project by specifying a folder containing scene images:
 
+   For Ubuntu:
    ```bash
    bash scripts/add_project.sh <path/to/scene/folder>
    ```
+
+   For Windows:
+   ```
+   .\scripts\add_project.ps1 <path/to/scene/folder>
+   ```   
 
    This script adjusts folder permissions, creates a project named after the scene folder, adds all `*.jpg` images to the project, and configures SAM backend integration.
    - A `meta.json` file is required in the scene folder to specify the available labels for annotation. The `meta.json` file should be in the following format:

@@ -8,7 +8,7 @@
 
 ## Overview
 
-The Label Toolkit is built on top of [Label Studio](https://github.com/HumanSignal/label-studio) and the [Label Studio ML Backend](https://github.com/HumanSignal/label-studio-ml-backend), providing a web-based tool for efficient data labeling and annotation. Designed specifically to support SAM backend for annotating 2D image data, Label Toolkit offers a user-friendly interface for creating segmentation masks by prompting keypoints or bounding boxes, and assigning text labels to those masks.
+The Label Toolkit is built on top of [Label Studio](https://github.com/HumanSignal/label-studio) and the [Label Studio ML Backend](https://github.com/HumanSignal/label-studio-ml-backend), providing a web-based tool for efficient data labeling and annotation. Designed specifically to support SAM/SAM2-Image backend for annotating 2D image data, Label Toolkit offers a user-friendly interface for creating segmentation masks by prompting keypoints or bounding boxes, and assigning text labels to those masks.
 
 ---
 
@@ -45,14 +45,6 @@ The Label Toolkit is built on top of [Label Studio](https://github.com/HumanSign
    conda activate label-toolkit
    ```
 
-<!-- 3. **Install Dependencies**
-
-   Install required dependencies from requirements.txt:
-
-   ```bash
-   python -m pip install --no-cache-dir -r requirements.txt
-   ``` -->
-
 3. **Install label-toolkit**
 
    Install Label Toolkit in editable mode:
@@ -63,16 +55,17 @@ The Label Toolkit is built on top of [Label Studio](https://github.com/HumanSign
 
 4. **Build Docker Images**
    - Generate `.env` file for Docker:
+     **For Ubuntu:**
 
-   For Ubuntu:
-   ```
-   bash scripts/create_env.sh
-   ```
+     ```
+     bash scripts/setup_env.sh
+     ```
 
-   For Windows:
-   ```
-   powershell -ExecutionPolicy Bypass -File .\scripts\setup_env.ps1 -ConfigFile .\config\config.json
-   ```
+     **For Windows:**
+
+     ```
+     .\scripts\setup_env.bat
+     ```
 
    - Build Docker images for Label Toolkit and SAM2 backend:
 
@@ -119,7 +112,8 @@ The Label Toolkit is built on top of [Label Studio](https://github.com/HumanSign
 
    By default, an admin user (admin@gmail.com) is available. To add more users, use the following script.
 
-   For Ubuntu:
+   **For Ubuntu:**
+
    ```bash
    bash scripts/add_user.sh <username> <(optional)password>
 
@@ -127,39 +121,57 @@ The Label Toolkit is built on top of [Label Studio](https://github.com/HumanSign
    bash scripts/add_user.sh user1 label-studio
    ```
 
-   For Windows:
+   **For Windows:**
+
    ```
-   .\scripts\add_user.ps1 <username> <(optional)password>
+   .\scripts\add_user.bat <username> <(optional)password>
 
    # Example:
-   .\scripts\add_user.ps1 user1 label-studio
-   ```   
+   .\scripts\add_user.bat user1 label-studio
+   ```
 
    This script will create a new user with the specified email format `<username>@gmail.com`. If a password is not provided, the default password will be set to `label-studio`.
 
 2. **Add a New Project from Scene Folder**
    - Add a project by specifying a folder containing scene images:
 
-   For Ubuntu:
-   ```bash
-   bash scripts/add_project.sh <path/to/scene/folder>
-   ```
+     **For Ubuntu:**
 
-   For Windows:
-   ```
-   .\scripts\add_project.ps1 <path/to/scene/folder>
-   ```   
+     ```bash
+     bash scripts/add_project.sh <path/to/scene/folder>
+     ```
 
-   This script adjusts folder permissions, creates a project named after the scene folder, adds all `*.jpg` images to the project, and configures SAM backend integration.
-   - A `meta.json` file is required in the scene folder to specify the available labels for annotation. The `meta.json` file should be in the following format:
+     **For Windows:**
 
-   ```json
-   {
-     "object_labels": ["01_object_1", "02_object_2", "03_object_3"]
-   }
-   ```
+     ```
+     .\scripts\add_project.bat <path/to/scene/folder>
+     ```
+
+     This script adjusts folder permissions, creates a project named after the scene folder, adds all `*.jpg` images to the project, and configures SAM backend integration.
+     - A `meta.json` file is required in the scene folder to specify the available labels for annotation. The `meta.json` file should be in the following format:
+
+     ```json
+     {
+       "object_labels": ["01_object_1", "02_object_2", "03_object_3"]
+     }
+     ```
 
 3. **Demo to Create Annotation**
+   - Create Peoject with Demo images:
+     We provide a `demo_scene` folder with sample images and a `meta.json` file. You can copy the folder to `./data/data_collection/scenes/demo_scene` and add the `demo_scene` project using the above script to try out the annotation process:
+
+     **For Ubuntu:**
+
+     ```bash
+     bash scripts/add_project.sh ./data/data_collection/scenes/demo_scene
+     ```
+
+     **For Windows:**
+
+     ```cmd
+     .\scripts\add_project.bat .\data\data_collection\scenes\demo_scene
+     ```
+
    - Auto-annotation Settings:
      To enable auto-annotation, enable the "auto-annotation" button in the bottom left of the Label Toolkit interface. And then, make sure to pick the correct auto-annotation model (e.g., point, rectangle) in the settings panel on the right.
      - Enable Auto-annotation:
@@ -169,7 +181,7 @@ The Label Toolkit is built on top of [Label Studio](https://github.com/HumanSign
      - Bounding box annotation mode:
        <img src="./docs/assets/rectangle-label-setting.png" width="400"/>
 
-   - Below is a demonstration of creating annotations using SAM backend integration:
+   - Below is a demonstration of creating annotations using SAM/SAM2-Image backend integration:
 
    ![Annotation Demo](./docs/assets/ml-backend-sam-demo_1080p.gif)
 

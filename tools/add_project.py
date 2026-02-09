@@ -25,7 +25,7 @@ def generate_label_interface(label_names):
       {rectangle_labels}
     </RectangleLabels>
 
-    <TextArea name="referring" toName="image" editable="true" perRegion="true" required="true"
+    <TextArea name="referring" toName="image" editable="true" perRegion="true" required="false"
               maxSubmissions="1" rows="5" placeholder="Referring Expression" displayMode="region-list"/>
     </View>"""
 

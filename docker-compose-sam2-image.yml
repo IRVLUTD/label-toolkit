@@ -25,6 +25,7 @@ services:
 
   segment_anything_model:
     container_name: label-studio-ml-backend
+    command: ["sh", "/app/start.sh"]
     build:
       context: ${ML_BACKEND_SAM2_IMAGE_MODEL_PATH}
       dockerfile: Dockerfile
